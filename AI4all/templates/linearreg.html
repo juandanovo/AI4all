@@ -1,0 +1,181 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    
+     <style>
+        body {
+          
+          color: Black;
+           
+            }
+
+            fieldset {
+                color: #000; 
+
+
+                border-radius: 25px;
+                padding: 20px;
+                width: 800px;
+            }
+            label {
+                width: 180px;
+                display: inline-block;
+                text-align: right;
+                vertical-align: text-top;
+            }
+
+            textarea {
+                width: 360px;
+                height: 50px;
+            }
+            .label-input-range {
+                display: inline-block;
+                text-align: center;
+                width: 80px;
+                color: red;
+            }
+            
+
+        </style>
+
+ 
+ 
+     
+ 
+
+  </head>
+     
+       
+<body>
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                 
+                  <a class="nav-link  " href="/">Data Statistic</a>
+                </li>
+                <li class="nav-item">
+            
+                  <a class="nav-link  " href="/home">Classification</a>
+                </li>
+                
+              </ul>
+            </div>
+          </div>
+    </div>
+</nav>
+<br>
+<br>
+
+    <h1>LINEAR REGRESSION</h1>
+
+        <fieldset>
+
+
+          <form class="" action="{% url 'result' %}" method="get">
+            {%  csrf_token %}
+            Enter the index for feature column (e.g 1,2,3,4): <input type="text" required name="fc"><br><br>
+            Enter the index for TARGET COLUMN  : <input type="text" required name="tc"><br><br>
+            Enter Values Separated by Commas: <input type="text" required name="SL"> <br> <br>
+
+
+
+
+            <legend>Select Hyperparameters</legend>
+            <label for="Split">Split :</label>
+
+            <input type="text" id="Split" name="Split">
+            <br>
+            <br>
+            <label for="fit_intercept">FIT_INTERCEPT :</label>
+            <select id="fit_intercept" name="fit_intercept">
+              <option value="true">true</option>
+              <option value="false">false</option>
+            </select>
+            <br>
+            <br>
+            <label for="normalize">NORMALIZE :</label>
+            <select id="normalize" name="normalize">
+                <option value="true">true</option>
+                <option value="false">false</option>
+            </select>
+            <br>
+            <br>
+            <br>
+            <br>
+            Enter the index for x-axis : <input type="text" required name="xaxis">
+            <br>
+            <br>
+            Enter the index for y-axis : <input type="text" required name="yaxis">
+            <br>
+            <br>
+
+            <label for="graph">Select Graph :</label>
+            <select id="graph" name="graph">
+              <option value="line">line</option>
+              <option value="pie">pie</option>
+              <option value="hist">hist</option>
+              <option value="scatter">scatter</option>
+              <option value="corr">corr</option>
+
+
+            </select>
+            <br>
+            <br>
+
+
+            <input type="submit" name="submit4"class="btn btn-dark select" value="Submit"> <br><br>
+
+
+
+
+          </form>
+        </fieldset>
+        <div class="row">
+          <div class="info col-md-6">
+              <p>Information</p>
+              <div class="box__info" style="height: 150px;">
+                  <p>  predicted value is {{y_pred}}</p><br>
+                  <p>     the test accuracy is {{acc}}</p><br>
+                  <p>   the train accuracy is {{acc1}}</p>
+        
+        
+           <br>
+           <br>
+           <br>
+           <br>
+           <br>  <br>
+          <div class="box__detail" style="width: 1000px; height: 600px;"  >
+            <div class="scroll" style="width: 1000px; height: 600px;">
+                <table class="table table-striped selectedTable"id="table_details">
+                    <thead class="table-dark">
+                        
+                        
+                    </thead>
+                    <tbody>
+        
+       
+
+          <h3>Graph</h3>
+            {% autoescape off %}
+            {{ plot_div }}
+            {% endautoescape %}
+
+
+
+
+         </tbody>
+   
+  </div>
+</div>
+  </body>
+</html>
