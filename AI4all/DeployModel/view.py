@@ -153,17 +153,45 @@ def result1(request):
     global features
     global target
 
+    lis = []
+    lis.append(request.GET['SL'])
+
+    #feature=[]
+    #feature.append(request.GET['fc'])
+
+
+    #target=[]
+    #target.append(request.GET['tc'])
+
+    s = lis[0].split(",")
+    #feature= feature[0].split(",")
+    #feature=[int(i) for i in feature]
+    
+
+    import numpy as np
+    import pandas as pd
+    from sklearn.model_selection import train_test_split
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.tree import DecisionTreeClassifier
+
+        #x = df.iloc[:,feature].values
+    x = df.iloc[:,1:-1].values
+        #y = df.iloc[:,int(target[0])].values
+    y = df.iloc[:,-1].values
+    #x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=float(hyp[0]))
+
     # KNN
     if 'submit' in request.GET:
-        global df
-        lis = []
-        lis.append(request.GET['SL'])
+        
+        #global df
+        #lis = []
+        #lis.append(request.GET['SL'])
 
-        feature=[]
+        #feature=[]
         #feature.append(request.GET['fc'])
 
 
-        target=[]
+        #target=[]
         #target.append(request.GET['tc'])
 
         s = lis[0].split(",")
@@ -178,7 +206,7 @@ def result1(request):
         #hyp.append(request.GET['yaxis'])
         hyp.append(request.GET['graph'])
 
-        import numpy as np
+        """ import numpy as np
         import pandas as pd
         from sklearn.model_selection import train_test_split
         from sklearn.neighbors import KNeighborsClassifier
@@ -186,8 +214,9 @@ def result1(request):
         x = df.iloc[:,1:-1].values
         #y = df.iloc[:,int(target[0])].values
         y = df.iloc[:,-1].values
+    """
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=float(hyp[0]))
-
+ 
         cls = KNeighborsClassifier(n_neighbors=int(hyp[1]), weights=hyp[2], algorithm=hyp[3])
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
@@ -221,18 +250,20 @@ def result1(request):
    
    # DECISION
     if 'submit1' in request.GET:
-        lis = []
+        
+        """ lis = []
         lis.append(request.GET['SL'])
         feature=[]
 
-        #target=[]
-        #feature.append(request.GET['fc'])
-        #print(feature)
-        #target.append(request.GET['tc'])
+        target=[]
+        feature.append(request.GET['fc'])
+        print(feature)
+        target.append(request.GET['tc'])
 
         s = lis[0].split(",")
-        #feature= feature[0].split(",")
-        #feature=[int(i) for i in feature]
+        feature= feature[0].split(",")
+        feature=[int(i) for i in feature] """
+
         hyp = []
         hyp.append(request.GET['Split'])
         hyp.append(request.GET['criterion'])
@@ -242,16 +273,15 @@ def result1(request):
         #hyp.append(request.GET['yaxis'])
         hyp.append(request.GET['graph'])
 
-        import numpy as np
+        """ import numpy as np
         import pandas as pd
         from sklearn.tree import DecisionTreeClassifier
         from sklearn.preprocessing import LabelEncoder
         from sklearn.model_selection import train_test_split
         from sklearn.metrics import accuracy_score
-        #x = df.iloc[:,feature].values
-        x = df.iloc[:,1:-1].values
-        #y = df.iloc[:,int(target[0])].values
-        y = df.iloc[:,-1].values
+
+        x = df.iloc[:,feature].values
+        y = df.iloc[:,int(target[0])].values """
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=float(hyp[0]))
 
@@ -266,8 +296,9 @@ def result1(request):
         acc1 = cls.score(x_train,y_train)*100
 
         #x_data = df.iloc[:,int(hyp[4])]
-        x_data = df.iloc[:,-1]
         #y_data = df.iloc[:,int(hyp[5])]
+        
+        x_data = df.iloc[:,-1]
         y_data = df.iloc[:,-1]
         u=hyp[4]
 
