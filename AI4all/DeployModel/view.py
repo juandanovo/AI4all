@@ -170,11 +170,13 @@ def result1(request):
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
 
+        request.session['model'] = cls
+
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
         acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
-        
+
         u=hyp[4]
 
         if u == 'scatter':
@@ -495,7 +497,6 @@ def result1(request):
             plot_div=fig.show()
         return render(request, "kmeans.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
 
-
 def Decision(request):
     return render(request, "Decision.html")
 def naivebayes(request):
@@ -513,3 +514,14 @@ def DecisionTreeREG(request):
 def kmeans(request):
     return render(request, "kmeans.html")
 
+
+def download_model(request):
+    if 'savemodel' in request.POST:
+        # Save model
+        from pickle import dump
+        # save the model to disk
+        #filename = 'finalized_model_FExam_bit.sav'
+        filename = request.POST['filename']+'.sav'
+        model = request.session['model']
+        dump(model, open(filename, 'wb'))
+    return render (request, )
