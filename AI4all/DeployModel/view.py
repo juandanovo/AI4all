@@ -427,7 +427,7 @@ def result1(request):
 
         x_train, x_test, y_train, y_test = train_test_split(x,y, test_size = float(hyp[0]))
 
-
+        #penalty{‘l1’, ‘l2’, ‘elasticnet’, ‘none’}, default=’l2’
         cls = LogisticRegression(solver=hyp[1],penalty=hyp[2])
 
 
