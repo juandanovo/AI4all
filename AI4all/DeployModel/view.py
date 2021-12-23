@@ -225,21 +225,21 @@ def result1(request):
         lis.append(request.GET['SL'])
         feature=[]
 
-        target=[]
-        feature.append(request.GET['fc'])
-        print(feature)
-        target.append(request.GET['tc'])
+        #target=[]
+        #feature.append(request.GET['fc'])
+        #print(feature)
+        #target.append(request.GET['tc'])
 
         s = lis[0].split(",")
-        feature= feature[0].split(",")
-        feature=[int(i) for i in feature]
+        #feature= feature[0].split(",")
+        #feature=[int(i) for i in feature]
         hyp = []
         hyp.append(request.GET['Split'])
         hyp.append(request.GET['criterion'])
         hyp.append(request.GET['splitter'])
         hyp.append(request.GET['max'])
-        hyp.append(request.GET['xaxis'])
-        hyp.append(request.GET['yaxis'])
+        #hyp.append(request.GET['xaxis'])
+        #hyp.append(request.GET['yaxis'])
         hyp.append(request.GET['graph'])
 
         import numpy as np
@@ -248,8 +248,10 @@ def result1(request):
         from sklearn.preprocessing import LabelEncoder
         from sklearn.model_selection import train_test_split
         from sklearn.metrics import accuracy_score
-        x = df.iloc[:,feature].values
-        y = df.iloc[:,int(target[0])].values
+        #x = df.iloc[:,feature].values
+        x = df.iloc[:,1:-1].values
+        #y = df.iloc[:,int(target[0])].values
+        y = df.iloc[:,-1].values
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=float(hyp[0]))
 
@@ -263,9 +265,11 @@ def result1(request):
         acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
 
-        x_data = df.iloc[:,int(hyp[4])]
-        y_data = df.iloc[:,int(hyp[5])]
-        u=hyp[6]
+        #x_data = df.iloc[:,int(hyp[4])]
+        x_data = df.iloc[:,-1]
+        #y_data = df.iloc[:,int(hyp[5])]
+        y_data = df.iloc[:,-1]
+        u=hyp[4]
 
         if u == 'scatter':
             plot_div = plot([Scatter(x=x_data, y=y_data,marker_color='green',mode='markers')],output_type='div')
