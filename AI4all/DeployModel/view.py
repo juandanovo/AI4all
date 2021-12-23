@@ -176,6 +176,10 @@ def result1(request):
     from sklearn.naive_bayes import MultinomialNB
     from sklearn.linear_model import LogisticRegression
     from sklearn.linear_model import LinearRegression
+    from sklearn.neural_network import MLPClassifier
+    from sklearn.svm import SVC
+    from sklearn.tree import DecisionTreeRegressor
+    from sklearn.cluster import KMeans
 
         #x = df.iloc[:,feature].values
     x = df.iloc[:,1:-1].values
@@ -517,7 +521,7 @@ def result1(request):
 # MPL CLASSIFIER
     if 'submit5' in request.GET:
         
-        lis = []
+        """ lis = []
         lis.append(request.GET['SL'])
         feature=[]
         feature.append(request.GET['fc'])
@@ -527,24 +531,25 @@ def result1(request):
 
         s = lis[0].split(",")
         feature= feature[0].split(",")
-        feature=[int(i) for i in feature]
+        feature=[int(i) for i in feature] """
+
         hyp = []
         hyp.append(request.GET['Split'])
         hyp.append(request.GET['activation'])
         hyp.append(request.GET['solver'])
         hyp.append(request.GET['learning_rate'])
-        hyp.append(request.GET['xaxis'])
-        hyp.append(request.GET['yaxis'])
+        #hyp.append(request.GET['xaxis'])
+        #hyp.append(request.GET['yaxis'])
         hyp.append(request.GET['graph'])
 
-        import numpy as np
+        """ import numpy as np
         import pandas as pd
         from sklearn.neural_network import MLPClassifier
         from sklearn.preprocessing import LabelEncoder
         from sklearn.model_selection import train_test_split
         from sklearn.metrics import accuracy_score
         x = df.iloc[:,feature].values
-        y = df.iloc[:,int(target[0])].values
+        y = df.iloc[:,int(target[0])].values """
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=float(hyp[0]))
 
@@ -558,9 +563,9 @@ def result1(request):
         acc = cls.score(x_test, y_test)*100
         acc1 = cls.score(x_train,y_train)*100
 
-        x_data = df.iloc[:,int(hyp[4])]
-        y_data = df.iloc[:,int(hyp[5])]
-        u=hyp[6]
+        #x_data = df.iloc[:,int(hyp[4])]
+        #y_data = df.iloc[:,int(hyp[5])]
+        u=hyp[4]
 
         if u == 'scatter':
             plot_div = plot([Scatter(x=x_data, y=y_data,marker_color='green',mode='markers')],output_type='div')
@@ -578,7 +583,8 @@ def result1(request):
 
 # SVC CLASSIFIER
     if 'submit6' in request.GET:
-        lis = []
+        
+        """ lis = []
         lis.append(request.GET['SL'])
         feature=[]
         feature.append(request.GET['fc'])
@@ -588,24 +594,24 @@ def result1(request):
 
         s = lis[0].split(",")
         feature= feature[0].split(",")
-        feature=[int(i) for i in feature]
+        feature=[int(i) for i in feature] """
         hyp = []
         hyp.append(request.GET['Split'])
         hyp.append(request.GET['C'])
         hyp.append(request.GET['kernel'])
         hyp.append(request.GET['gamma'])
-        hyp.append(request.GET['xaxis'])
-        hyp.append(request.GET['yaxis'])
+        #hyp.append(request.GET['xaxis'])
+        #hyp.append(request.GET['yaxis'])
         hyp.append(request.GET['graph'])
 
-        import numpy as np
+        """ import numpy as np
         import pandas as pd
         from sklearn.svm import SVC
         from sklearn.preprocessing import LabelEncoder
         from sklearn.model_selection import train_test_split
         from sklearn.metrics import accuracy_score
         x = df.iloc[:,feature].values
-        y = df.iloc[:,int(target[0])].values
+        y = df.iloc[:,int(target[0])].values """
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=float(hyp[0]))
 
@@ -619,9 +625,9 @@ def result1(request):
         acc = cls.score(x_test, y_test)*100
         acc1 = cls.score(x_train,y_train)*100
 
-        x_data = df.iloc[:,int(hyp[4])]
-        y_data = df.iloc[:,int(hyp[5])]
-        u=hyp[6]
+        #x_data = df.iloc[:,int(hyp[4])]
+        #y_data = df.iloc[:,int(hyp[5])]
+        u=hyp[4]
 
         if u == 'scatter':
             plot_div = plot([Scatter(x=x_data, y=y_data,marker_color='green',mode='markers')],output_type='div')
@@ -639,7 +645,8 @@ def result1(request):
 
 # DECIION TREE REG
     if 'submit7' in request.GET:
-        lis = []
+        
+        """ lis = []
         lis.append(request.GET['SL'])
         feature=[]
         feature.append(request.GET['fc'])
@@ -649,24 +656,24 @@ def result1(request):
 
         s = lis[0].split(",")
         feature= feature[0].split(",")
-        feature=[int(i) for i in feature]
+        feature=[int(i) for i in feature] """
         hyp = []
         hyp.append(request.GET['Split'])
         hyp.append(request.GET['criterion'])
         hyp.append(request.GET['splitter'])
         hyp.append(request.GET['max'])
-        hyp.append(request.GET['xaxis'])
-        hyp.append(request.GET['yaxis'])
+        #hyp.append(request.GET['xaxis'])
+        #hyp.append(request.GET['yaxis'])
         hyp.append(request.GET['graph'])
 
-        import numpy as np
+        """ import numpy as np
         import pandas as pd
         from sklearn.tree import DecisionTreeRegressor
         from sklearn.preprocessing import LabelEncoder
         from sklearn.model_selection import train_test_split
         from sklearn.metrics import accuracy_score
         x = df.iloc[:,feature].values
-        y = df.iloc[:,int(target[0])].values
+        y = df.iloc[:,int(target[0])].values """
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=float(hyp[0]))
 
@@ -680,9 +687,9 @@ def result1(request):
         acc = cls.score(x_test, y_test)*100
         acc1 = cls.score(x_train,y_train)*100
 
-        x_data = df.iloc[:,int(hyp[4])]
-        y_data = df.iloc[:,int(hyp[5])]
-        u=hyp[6]
+        #x_data = df.iloc[:,int(hyp[4])]
+        #y_data = df.iloc[:,int(hyp[5])]
+        u=hyp[4]
 
         if u == 'scatter':
             plot_div = plot([Scatter(x=x_data, y=y_data,marker_color='green',mode='markers')],output_type='div')
@@ -700,7 +707,8 @@ def result1(request):
 
 # K MEANS
     if 'submit8' in request.GET:
-        lis = []
+        
+        """ lis = []
         lis.append(request.GET['SL'])
         feature=[]
         feature.append(request.GET['fc'])
@@ -710,23 +718,23 @@ def result1(request):
 
         s = lis[0].split(",")
         feature= feature[0].split(",")
-        feature=[int(i) for i in feature]
+        feature=[int(i) for i in feature] """
         hyp = []
         hyp.append(request.GET['Split'])
         hyp.append(request.GET['n_clusters'])
         hyp.append(request.GET['algorithm'])
-        hyp.append(request.GET['xaxis'])
-        hyp.append(request.GET['yaxis'])
+        #hyp.append(request.GET['xaxis'])
+        #hyp.append(request.GET['yaxis'])
         hyp.append(request.GET['graph'])
 
-        import numpy as np
+        """ import numpy as np
         import pandas as pd
         from sklearn.cluster import KMeans
         from sklearn.preprocessing import LabelEncoder
         from sklearn.model_selection import train_test_split
         from sklearn.metrics import accuracy_score
         x = df.iloc[:,feature].values
-        y = df.iloc[:,int(target[0])].values
+        y = df.iloc[:,int(target[0])].values """
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=float(hyp[0]))
 
@@ -740,9 +748,9 @@ def result1(request):
         acc = cls.score(x_test, y_test)*100
         acc1 = cls.score(x_train,y_train)*100
 
-        x_data = df.iloc[:,int(hyp[3])]
-        y_data = df.iloc[:,int(hyp[4])]
-        u=hyp[5]
+        #x_data = df.iloc[:,int(hyp[3])]
+        #y_data = df.iloc[:,int(hyp[4])]
+        u=hyp[3]
 
         if u == 'scatter':
             plot_div = plot([Scatter(x=x_data, y=y_data,marker_color='green',mode='markers')],output_type='div')
