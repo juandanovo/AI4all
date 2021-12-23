@@ -22,25 +22,22 @@ global features
 global target
 global column
 
-def upload(request):
-    """
 
-    
-    global data
-    global column
-    column = {}
-    if request.method == 'POST':
-        uploaded_file = request.FILES['document']
-        fs = FileSystemStorage()
-        fs.save(uploaded_file.name, uploaded_file)
-        column['url'] = fs.url(uploaded_file.name)
-        data = pd.read_csv(r'C:\Users/Aamir/Desktop/Machine_Learning/mmm/DeployModel/DeployModel' + fs.url(uploaded_file.name))
+def upload(request): 
+
+   # global data
+   # global column
+   # column = {}
+    #if request.method == 'POST':
+        #uploaded_file = request.FILES['document']
+        #fs = FileSystemStorage()
+        #fs.save(uploaded_file.name, uploaded_file)
+        #column['url'] = fs.url(uploaded_file.name)
+        #data = pd.read_csv(r'C:\Users/Aamir/Desktop/Machine_Learning/mmm/DeployModel/DeployModel' + fs.url(uploaded_file.name))
         
-        
-        
-        
-        column['a'] = data.columns
-         
+       # column['a'] = data.columns
+    """     
+        # Filling missing values -- Data imputation
         features = request.POST.getlist('Cars[]')
         column['features'] = features
         for i in data.columns:
@@ -52,13 +49,12 @@ def upload(request):
                 imp = SimpleImputer(missing_values=np.nan, strategy='most_frequent')
                 s = imp.fit_transform(data[i].values.reshape(-1, 1))
                 data[i] = s
-
     """
+    #return render(request, ['index1.html', 'home.html'],column)
+    #return render(request, ['index1.html', 'home.html'])
+    return render(request, 'home.html')
 
-    return render(request, ['index1.html', 'home.html'])
-    
 def index1(request):
-
     global df
     # request.session.clear()
     if bool(request.FILES.get('document', False)) == True:
@@ -117,11 +113,20 @@ def index1(request):
                 "rows": rows,
             }
     return render(request, 'upload.html', data) 
-      
+
+
 def home(request):
     return render(request, "home.html")
 
+# method type
+def methodtype(request):
+    if 'classification' in request.POST:
+        tmodel = ['knn','DTC','LOG']
+    if 'regretion' in request.POST:
+        tmodel = ['LIN','MLP','SVC']
+        return render(request,"upload.html", tmodel)
 
+# Models swichs
 def result(request):
     if 'knn' in request.POST:
         return render(request, "knn.html")
@@ -147,6 +152,8 @@ def result1(request):
     global df
     global features
     global target
+
+    # KNN
     if 'submit' in request.GET:
         global df
         lis = []
@@ -206,6 +213,8 @@ def result1(request):
             plot_div=fig.show()
 
         return render(request, "knn.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div})
+   
+   # DECISION
     if 'submit1' in request.GET:
         lis = []
         lis.append(request.GET['SL'])
@@ -267,7 +276,7 @@ def result1(request):
             plot_div=fig.show()
         return render(request, "Decision.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
 
-
+# NAIVE BAYES
     if 'submit2' in request.GET:
         lis = []
         lis.append(request.GET['SL'])
@@ -327,7 +336,7 @@ def result1(request):
             plot_div=fig.show()
         return render(request, "naivebayes.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
 
-
+# LOGISTIC REGRESSION
     if 'submit3' in request.GET:
         lis = []
         lis.append(request.GET['SL'])
@@ -389,7 +398,7 @@ def result1(request):
             plot_div=fig.show()
         return render(request, "logisticreg.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
 
-
+# LINEAR REGRESSION
     if 'submit4' in request.GET:
         lis = []
         lis.append(request.GET['SL'])
@@ -449,7 +458,7 @@ def result1(request):
             plot_div=fig.show()
         return render(request, "linearreg.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
 
-
+# MPL CLASSIFIER
     if 'submit5' in request.GET:
         lis = []
         lis.append(request.GET['SL'])
@@ -510,7 +519,7 @@ def result1(request):
             plot_div=fig.show()
         return render(request, "MLPClassifier.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
 
-
+# SVC CLASSIFIER
     if 'submit6' in request.GET:
         lis = []
         lis.append(request.GET['SL'])
@@ -571,7 +580,7 @@ def result1(request):
             plot_div=fig.show()
         return render(request, "SVC_Classifier.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
 
-
+# DECIION TREE REG
     if 'submit7' in request.GET:
         lis = []
         lis.append(request.GET['SL'])
@@ -632,6 +641,7 @@ def result1(request):
             plot_div=fig.show()
         return render(request, "DecisionTreeREG.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
 
+# K MEANS
     if 'submit8' in request.GET:
         lis = []
         lis.append(request.GET['SL'])
@@ -710,7 +720,7 @@ def kmeans(request):
     return render(request, "kmeans.html")
 
 
-
+"""
 def preprocessing(request):
     # request.session.clear()
     if bool(request.FILES.get('document', False)) == True:
@@ -769,3 +779,5 @@ def preprocessing(request):
                 "rows": rows,
             }
     return render(request, 'upload.html', data) 
+
+"""
