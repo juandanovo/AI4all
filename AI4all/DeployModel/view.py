@@ -523,5 +523,5 @@ def download_model(request):
         #filename = 'finalized_model_FExam_bit.sav'
         filename = request.POST['filename']+'.sav'
         model = request.session['model']
-        dump(model, open(filename, 'wb'))
-    return render (request, )
+        saved_model= dump(model, open(filename, 'wb'))
+    return render (request, ["Decision.html","knn.thml", "kmeans.html"] ,saved_model)
