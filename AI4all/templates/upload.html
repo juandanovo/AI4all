@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <main>
+    <body class="sb-nav-fixed">
     <div class="container">
         <div class="row">
             <div class="uploaded col-md-12">
@@ -14,7 +15,11 @@
             </div>
         </div>
         <div class="row">
+
+
+
             <div class="info col-md-6">
+                
                 <p>Information</p>
                 <div class="box__info">
                     <p>File Name : {{ name }}</p>
@@ -22,6 +27,8 @@
                     <p>Row Data : {{ rows }}</p>
                 </div>
             </div>
+
+            
             <div class="attributes col-md-6">
                 <p>Statistic Attributes</p>
                 <div class="box__attributes">
@@ -159,6 +166,8 @@
 </form>
 <br>
 <br><br><br><br>
+
+
 
 {% endblock %}
 
