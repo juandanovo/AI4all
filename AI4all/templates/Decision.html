@@ -1,10 +1,12 @@
-{% load static %}<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends 'base.html' %}
+{% block decision %}
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/checkout/">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+   
 
     <!-- Bootstrap CSS -->
 
@@ -17,50 +19,228 @@
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
 
-     
- 
+  <!-- Bootstrap core CSS -->
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  </head>
-     
-       
-  <body class="sb-nav-fixed">
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
 
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                 
-                  <a class="nav-link  " href="/">Data Statistic</a>
-                </li>
-                <li class="nav-item">
-            
-                  <a class="nav-link  " href="/home">Classification</a>
-                </li>
-                
-              </ul>
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+  
+  <!-- Custom styles for this template -->
+  <link href="form-validation.css" rel="stylesheet">
+</head>
+
+  
+<div class="container">
+<main>
+  <div class="py-5 ">
+    
+    <h2>DECISION TREE CLASSIFIER</h2>
+     </div>
+
+  <div class="row g-8">
+   
+    <div class="col-md-7 col-lg-8">
+      
+      <form class="needs-validation" action="{% url 'result' %}" method="get" novalidate>        
+          {%  csrf_token %}
+        <div class="row g-3">
+          <div class="col-12">
+            <label for="address" class="form-label">Enter Input Prediction Values (Separated by Commas):</label>
+            <input type="text" class="form-control" id="address" required name="SL" placeholder="1,2,3,4..." >
+            <div class="invalid-feedback">
+              Please enter input values.
             </div>
           </div>
+          <div class="col-sm-6">
+            <label for="firstName" class="form-label">Select Hyperparameters</label><br>
+            <label for="Split" class="form-label">Split :</label>
+            <input type="text" class="form-control" id="Split" name="Split" placeholder="" value="" required>
+            <div class="invalid-feedback">
+              Valid split is required.
+            </div>
+          </div>
+         <div class="col-12">
+            
+          </div>
+
+          <div class="col-md-5">
+            <label class="form-label" for="criterion">Criterion :</label>
+            <select class="form-select" id="criterion" name="criterion"> required>
+              <option value="gini">gini</option>
+              <option value="entropy">entropy</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid criterion.
+            </div>
+          </div>
+
+            
+          <div class="col-md-4">
+            <label class="form-label" for="splitter">Splitter :</label>
+            <select class="form-select" id="splitter" name="splitter" required>
+              <option value="best">best</option>
+                <option value="random">random</option>
+            </select>
+            <div class="invalid-feedback">
+              Please provide a valid splitter.
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label" for="max">Max Features :</label>
+            <select class="form-select" id="max" name="max" required>              
+              <option value="auto">auto</option>
+              <option value="sqrt">sqrt</option>
+              <option value="log2">log2</option>
+            </select>
+            <div class="invalid-feedback">
+              Please provide a valid Max Features.
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row gy-3">
+          <!-- <div class="col-md-6">
+            <label for="cc-name" class="form-label">Enter the index for x-axis</label>
+            <input type="text" class="form-control" id="cc-name" placeholder="" required>
+            <div class="invalid-feedback">
+              Index for x-asis is required
+            </div>
+          </div> -->
+
+          <!-- <div class="col-md-6">
+            <label for="cc-number" class="form-label">Enter the index for y-axis</label>
+            <input type="text" class="form-control" id="cc-number" placeholder="" required>
+            <div class="invalid-feedback">
+              index for y-axis is required
+            </div>
+          </div> -->
+
+          
+          <br>
+          <div class="col-md-6">
+            <label  for="graph" class="form-label">Select Graph :</label>            
+            <select id="graph"  class="form-select"  name="graph">
+              <option value="line">line</option>
+              <option value="pie">pie</option>
+              <option value="hist">hist</option>
+              <option value="scatter">scatter</option>
+              <option value="corr">corr</option>
+            </select>
+
+            <div class="invalid-feedback">
+              Graph is required
+            </div>
+            
+          </div>
+          <br><br>
+          <div class="col-md-3">
+            
+          </div>
+          <br><br> <br><br>
+          <div class="col-md-12">
+            <input type="submit" name="submit1" class="w-100 btn btn-primary btn-lg" value="Submit"> <br><br>
+            
+          </div>
+        </div>
+        
+        <hr class="my-4">
+        <br>
+         <div class="my-3">
+
+          <div class="info col-md-6">
+           
+            <div class="box__info" style="height: 150px;">
+              <table class="table table_attr-primary">
+                <thead class="table">               
+                <tr>
+                        <th scope="col">Result</th>
+                </tr>
+                </thead>
+                <tbody>               
+                        <tr>
+                            <th><p>Predicted value is = {{y_pred}}</p></th>
+                          </tr>
+                          <tr><th> <p>The test accuracy is = {{acc}}</p></th></tr>
+                            
+                          <tr>  <th> <p>The train accuracy is = {{acc1}}</p></th></tr>
+                       
+                    </tbody>
+            </table>      
+         
+         <br>  
+        <div class="box__detail" style="width: 1000px; height: 600px;"  >
+          <div class="scroll" style="width: 1000px; height: 600px;">
+              <table class="table table-striped selectedTable"id="table_details">
+                  <thead class="table-dark">                     
+                      
+                  </thead>
+                  <tbody>     
+     
+
+        <h3>Graph</h3>
+          {% autoescape off %}
+          {{ plot_div }}
+          {% endautoescape %}
+
+       </tbody>
+ 
+</div>
+</div>
+</div></div>
+
+        </div>
+
+         <div class="row gy-3">
+          
+        </div> 
+
+        <hr class="my-4">
+
+     
+
+</form>
+
     </div>
-</nav>
-<br>
-<br>
-    <h1>DECISION TREE CLASSIFIER</h1>
+  </div>
+</main>
+
+
+</div>
+
+ 
+
+
+    <!-- <h1>DECISION TREE CLASSIFIER</h1>
 
         <fieldset>
 
 
           <form class="" action="{% url 'result' %}" method="get">
-            {%  csrf_token %}
+            {%  csrf_token %} -->
            <!--  Enter the index for feature column (e.g 1,2,3,4): <input type="text" required name="fc"><br><br>
             Enter the index for TARGET COLUMN  : <input type="text" required name="tc"><br><br> -->
-            Enter Input Prediction Values (Separated by Commas): <input type="text" required name="SL"> <br> <br>
+            <!-- Enter Input Prediction Values (Separated by Commas): <input type="text" required name="SL"> <br> <br> -->
 
 
 
 
-            <legend>Select Hyperparameters</legend>
+            <!-- <legend>Select Hyperparameters</legend>
             <label for="Split">Split :</label>
 
             <input type="text" id="Split" name="Split">
@@ -112,13 +292,13 @@
 
             <input type="submit" name="submit1"class="btn btn-dark select" value="Submit"> <br><br>
 
+ -->
 
 
-
-          </form>
+         <!-- </form>
         </fieldset>
         <div class="row">
-          <div class="info col-md-6">
+           <div class="info col-md-6">
               <p>Information</p>
               <div class="box__info" style="height: 150px;">
                   <p>  predicted value is {{y_pred}}</p><br>
@@ -154,8 +334,9 @@
    
   </div>
 </div>
+</div></div></div> -->
 
-
+{% endblock %}
 
 
 
