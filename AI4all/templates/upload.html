@@ -8,12 +8,13 @@
                 <div class="row">
                     <div class="uploaded col-md-12">
                         
-                            <h2 class="font-weight-bold">Classification <br>Obtein your result</h2>
+                            <h2 class="font-weight-bold">Data Statistic </h2>
+                            <p class="text-muted mb-0">They allow us to learn from past behaviors, and understand how they might influence future outcomes.</p><br>
                             <div class="input-group mb-3">
                                 {% csrf_token %}
                                 
                                 <input type="file" class="form-control" name="document" id="nameFile">
-                                <button class="btn btn-dark" type="submit" id="file">Apply</button>
+                                <button class="btn btn-outline-primary" type="submit" id="file">Apply</button>
                             </div>
                         </form>
                     </div>
@@ -45,6 +46,8 @@
                     <p>Attributes : {{ attributes }}</p>
                     <p>Row Data : {{ rows }}</p>
                 </div>
+                <!-- <br><br><br><br> -->
+
                             <!-- <h6 class="font-weight-bold mb-3">Marketing Automation</h6> -->
                             <!-- <input type="submit" class="btn btn-outline-primary"name="knn"  value="K Neighbors Classifier">
                             
@@ -97,7 +100,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
                                             </div>
                                         </div>
                                         </div>
@@ -252,11 +255,11 @@
                         </div>
                     </div>
                 </div> -->
-                   <div class="col my-3">
+                   <div class="col my-6">
                     <div class="card border-hover-primary hover-scale">
-                        <div class="chart col-md-6">
+                        <div class="chart col-md-12">
                             
-                            <canvas id="myChart" width="100px" height="100px">                          
+                            <canvas id="myChart" width="150" height="100">                          
                                 </canvas>                         
 
                         </div>
