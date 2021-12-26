@@ -16,6 +16,8 @@ from plotly.offline import plot
 from plotly.graph_objs import Scatter,bar,Pie,Histogram,Heatmap
 import plotly.express as px
 
+
+
 global df
 global data
 global features
@@ -495,7 +497,17 @@ def result1(request):
             df = df.corr()
             fig = px.imshow(df)
             plot_div=fig.show()
+            
         return render(request, "kmeans.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
+
+
+    if 'save_model' in request.POST:
+        from sklearn.externals import joblib
+        #filename = request.POST['filename']
+        model = request.session['model']
+        joblib.dump(model, 'AI4ALL_model')
+        return render (request)
+
 
 def Decision(request):
     return render(request, "Decision.html")
@@ -515,13 +527,22 @@ def kmeans(request):
     return render(request, "kmeans.html")
 
 
-def download_model(request):
+""" def download_model(request):
     if 'savemodel' in request.POST:
         # Save model
         from pickle import dump
         # save the model to disk
-        #filename = 'finalized_model_FExam_bit.sav'
-        filename = request.POST['filename']+'.sav'
+        filename = 'AI4ALL_model.sav'
+        #filename = request.POST['filename']+'.sav'
         model = request.session['model']
         saved_model= dump(model, open(filename, 'wb'))
-    return render (request, ["Decision.html","knn.thml", "kmeans.html"] ,saved_model)
+    return render (request, ["Decision.html","knn.thml", "kmeans.html"] ,saved_model) """
+
+def save_model(request):
+        if 'savemodel1' in request.POST:
+            from pickle import dump
+            model = request.session['model']
+            filehandler = open('AI4ALL_model.sav', 'wb')
+            dump(model, filehandler)
+        #return render (request)
+        return None
