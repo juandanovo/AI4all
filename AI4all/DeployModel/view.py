@@ -95,6 +95,9 @@ def index1(request):
 def home(request):
     return render(request, "home.html")
 
+def base2(request):
+    return render(request, "base2.html")
+
 # method type
 def methodtype(request):
     if 'classification' in request.POST:

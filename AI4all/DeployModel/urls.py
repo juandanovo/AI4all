@@ -23,7 +23,8 @@ urlpatterns = [
     path('DecisionTreeREG/',view.DecisionTreeREG,name="DecisionTreeREG"),
     path('kmeans/',view.kmeans,name="kmeans"),
     path('home/',view.home,name='home'),
-    path('SVC_Classifier/',view.save_model,name="SVC_model")
+    path('SVC_Classifier/',view.save_model,name="SVC_model"),
+    path('base2/',view.base2,name='base2')
       
 
 ]
