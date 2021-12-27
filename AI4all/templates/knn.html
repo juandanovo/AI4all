@@ -1,6 +1,200 @@
+{% extends 'base.html' %}
+{% block classification %}
+
+  
+<div class="container">
+<main>
+  <div class="py-5 ">
+    
+    <h2>K-Nearest Neighbors (KNN) algorithm</h2>
+     </div>
+
+  <div class="row g-8">
+   
+    <div class="col-md-7 col-lg-8">
+      
+      <form class="needs-validation" action="{% url 'result' %}" method="get" novalidate>        
+          {%  csrf_token %}
+        <div class="row g-3">
+          <div class="col-12">
+            <label for="address" class="form-label">Enter Input Prediction Values (Separated by Commas):</label>
+            <input type="text" class="form-control" id="address" required name="SL" placeholder="1,2,3,4..." >
+            <div class="invalid-feedback">
+              Please enter input values.
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <label for="firstName" class="form-label">Select Hyperparameters</label><br>
+            <label for="Split" class="form-label">Split :</label>
+            <input type="text" class="form-control" id="Split" name="Split" placeholder="" value="" required>
+            <div class="invalid-feedback">
+              Valid split is required.
+            </div>
+
+            <label for="neighbour" class="form-label">Neighbour :</label>
+            <input type="number" class="form-control" id="neighbour" name="neighbour" placeholder="" value="" required>
+            <div class="invalid-feedback">
+              Valid Neighbour is required.
+            </div>
+          </div>
+          
+         <div class="col-12">
+            
+          </div>
+
+          <div class="col-md-5">
+            <label class="form-label" for="weights">Select Weights :</label>
+            <select class="form-select" id="weights" name="weights" required>
+              <option value="uniform">uniform</option>
+              <option value="distance">distance</option>
+              
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid weights.
+            </div>
+          </div>
+
+            
+          <div class="col-md-4">
+            <label class="form-label"  for="algorithm">Select algorithm :</label>
+            <select class="form-select" id="algorithm" name="algorithm" required>
+              <option value="auto">auto</option>
+              <option value="ball_tree">bal_tree</option>
+              <option value="kd_tree">kd_tree</option>
+              <option value="brute">brute</option>            
+            </select>
+            <div class="invalid-feedback">
+              Please provide a valid algorithm.
+            </div>
+          </div>
+
+          <!-- <div class="col-md-3">
+            <label class="form-label" for="learning_rate">LEARNING_RATE :</label>
+            <select class="form-select" id="learning_rate" name="learning_rate" required>              
+              <option value="constant">contant</option>
+              <option value="invscaling">invscaling</option>
+              <option value="adaptive">adaptive</option>
+            </select>
+            <div class="invalid-feedback">
+              Please provide a valid learning rate.
+            </div>
+          </div> -->
+        </div>
+
+        <br>
+
+        <div class="row gy-3">
+          <!-- <div class="col-md-6">
+            <label for="cc-name" class="form-label">Enter the index for x-axis</label>
+            <input type="text" class="form-control" id="cc-name" placeholder="" required>
+            <div class="invalid-feedback">
+              Index for x-asis is required
+            </div>
+          </div> -->
+
+          <!-- <div class="col-md-6">
+            <label for="cc-number" class="form-label">Enter the index for y-axis</label>
+            <input type="text" class="form-control" id="cc-number" placeholder="" required>
+            <div class="invalid-feedback">
+              index for y-axis is required
+            </div>
+          </div> -->
+
+          
+          <br>
+          <div class="col-md-6">
+            <label  for="graph" class="form-label">Select Graph :</label>            
+            <select id="graph"  class="form-select"  name="graph">
+              <option value="line">line</option>
+              <option value="pie">pie</option>
+              <option value="hist">hist</option>
+              <option value="scatter">scatter</option>
+              <option value="corr">corr</option>
+            </select>
+
+            <div class="invalid-feedback">
+              Graph is required
+            </div>
+            
+          </div>
+          <br><br>
+          <div class="col-md-3">
+            
+          </div>
+          <br><br> <br><br>
+          <div class="col-md-12">
+            <input type="submit" name="submit" class="w-100 btn btn-primary btn-lg" value="Submit"> <br><br>
+            
+          </div>
+        </div>
+        
+        <hr class="my-4">
+        <br>
+         <div class="my-3">
+
+          <div class="info col-md-6">
+           
+            <div class="box__info" style="height: 150px;">
+              <table class="table table_attr-primary">
+                <thead class="table">               
+                <tr>
+                        <th scope="col">Result</th>
+                </tr>
+                </thead>
+                <tbody>               
+                        <tr>
+                            <th><p>Predicted value is = {{y_pred}}</p></th>
+                          </tr>
+                          <tr><th> <p>The test accuracy is = {{acc}}</p></th></tr>
+                            
+                          <tr>  <th> <p>The train accuracy is = {{acc1}}</p></th></tr>
+                       
+                    </tbody>
+            </table>      
+         
+         <br>  
+        <div class="box__detail" style="width: 1000px; height: 600px;"  >
+          <div class="scroll" style="width: 1000px; height: 600px;">
+              <table class="table table-striped selectedTable"id="table_details">
+                  <thead class="table-dark">                     
+                      
+                  </thead>
+                  <tbody>     
+     
+
+        <h3>Graph</h3>
+          {% autoescape off %}
+          {{ plot_div }}
+          {% endautoescape %}
+
+       </tbody>
+ 
+</div>
+</div>
+</div></div>
+
+        </div>
+
+         <div class="row gy-3">
+          
+        </div> 
+
+        <hr class="my-4">
+
+     
+
+</form>
+
+    </div>
+  </div>
+</main>
 
 
-{% load static %}<!DOCTYPE html>
+</div>
+
+{% endblock %}
+
+<!-- {% load static %}<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
@@ -8,7 +202,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
+   
     
      <style>
         body {
@@ -84,8 +278,8 @@
 
           <form class="" action="{% url 'result' %}" method="get">
             {%  csrf_token %}
-            <!-- Enter the index for feature column (e.g 1,2,3,4): <input type="text" required name="fc"><br><br>
-            Enter the index for TARGET COLUMN  : <input type="text" required name="tc"><br><br> -->
+            Enter the index for feature column (e.g 1,2,3,4): <input type="text" required name="fc"><br><br>
+            Enter the index for TARGET COLUMN  : <input type="text" required name="tc"><br><br>
             Enter Input Prediction Values (Separated by Commas): <input type="text" required name="SL"> <br> <br>
 
 
@@ -114,12 +308,12 @@
                 <option value="kd_tree">kd_tree</option>
                 <option value="brute">brute</option>
             </select>
-           <!--  <br>
+            <br>
             <br>
             Enter the index for x-axis : <input type="text" required name="xaxis">
             <br>
             <br>
-            Enter the index for y-axis : <input type="text" required name="yaxis"> -->
+            Enter the index for y-axis : <input type="text" required name="yaxis">
             <br>
             <br>
 
@@ -182,4 +376,4 @@
   </div>
 </div>
   </body>
-</html>
+</html> -->
