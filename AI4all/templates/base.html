@@ -35,6 +35,12 @@
         font-size: 3.5rem;
       }
     }
+
+      
+  </style>
+  <style media="print">
+    body {visibility:hidden;}
+    .print {visibility:visible;}
   </style>
   <title>AI 4 All</title>
 
@@ -98,16 +104,16 @@
     </svg>    
          
       <div class="container-fluid"> 
-        <div class="row ">
+        <div class="row print">
           <div class="p-2 bg-primary text-white text-center ">      
             <h1>AI 4 ALL</h1>
             <p>An AI model is a program or algorithm that utilizes a set of data that enables it to recognize certain patterns. <br>This allows it to reach a conclusion or make a prediction when provided with sufficient information.</p> 
           </div>
-          </div>
+        </div>
           
         <div class="row">
           <div class="col-sm-3">
-      <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sticky-top" style="width: 280px;">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sticky-top" style="width: 280px;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-primary text-decoration-none">
           <svg class="bi me-2" width="40" height="32"><use xlink:href="#cpu-fill"/></svg>
           <span class="fs-4">AI 4 ALL</span>
@@ -136,38 +142,38 @@
         </ul>
         <hr>
         
-      </div>
-      </div>
+        </div>
+        </div>
     
   
-    <div class="col-sm-9">
-      <br>
+        <div class="col-sm-9">
+        <br>
 
-   <!-- Models page -->
-    {% block models %}
-    {% endblock %}
-    <!-- Upload page -->  
-    {% block content %}
-    {% endblock %}    
-    {% block scripts %}
-    {% endblock %}
+        <!-- Models page -->
+        {% block models %}
+        {% endblock %}
+        <!-- Upload page -->  
+        {% block content %}
+        {% endblock %}    
+        {% block scripts %}
+        {% endblock %}
 
-    <!-- Classification models  -->  
-    {% block classification %}
-    {% endblock %}
+        <!-- Classification models  -->  
+        {% block classification %}
+        {% endblock %}
 
-    <!-- Regression models  -->  
-    {% block regression %}
-    {% endblock %}
+        <!-- Regression models  -->  
+        {% block regression %}
+        {% endblock %}
 
-    <!-- Home page -->  
-    {% block home %}
-    {% endblock %}
-  </div>
+        <!-- Home page -->  
+        {% block home %}
+        {% endblock %}
+        </div>
 
  
         </div>
-      </div>
+   </div>
   </div>
   
   </div>
