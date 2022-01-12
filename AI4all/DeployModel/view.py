@@ -31,6 +31,17 @@ def upload(request):
     #return render(request, ['index1.html', 'home.html'])
     return render(request, 'home.html')
 
+#new
+def clean_dataset(df):
+
+    assert isinstance(df, pd.DataFrame), "df needs to be a pd.DataFrame"
+
+    df.dropna(inplace=True)
+
+    indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
+
+    return df[indices_to_keep].astype(np.float64)
+
 def index1(request):
     global df
     # request.session.clear()
@@ -39,6 +50,9 @@ def index1(request):
         name = uploaded_file.name
         request.session['name'] = name
         df = pd.read_csv(uploaded_file)
+        #new
+        df = clean_dataset(df)
+
         dataFrame = df.to_json()
         request.session['df'] = dataFrame
         
