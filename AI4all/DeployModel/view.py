@@ -175,7 +175,7 @@ def result1(request):
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
 
-        request.session['model'] = cls
+        # request.session['model'] = cls
 
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
