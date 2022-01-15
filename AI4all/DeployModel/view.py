@@ -32,15 +32,15 @@ def upload(request):
     return render(request, 'home.html')
 
 #new
-def clean_dataset(df):
+# def clean_dataset(df):
 
-    assert isinstance(df, pd.DataFrame), "df needs to be a pd.DataFrame"
+#     assert isinstance(df, pd.DataFrame), "df needs to be a pd.DataFrame"
 
-    df.dropna(inplace=True)
+#     df.dropna(inplace=True)
 
-    indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
+#     indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
 
-    return df[indices_to_keep].astype(np.float64)
+#     return df[indices_to_keep].astype(np.float64)
 
 def index1(request):
     global df
@@ -51,7 +51,7 @@ def index1(request):
         request.session['name'] = name
         df = pd.read_csv(uploaded_file)
         #new
-        df = clean_dataset(df)
+        #df = clean_dataset(df)
 
         dataFrame = df.to_json()
         request.session['df'] = dataFrame
@@ -207,8 +207,13 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            df = df.corr()
-            fig = px.imshow(df)
+            #df = df.corr()
+
+            df= px.data.tips()   
+            fig= px.box(df, x="day", y="tip")   
+            #fig.show()
+             
+            #fig = px.imshow(df)
             plot_div=fig.show()
 
         return render(request, "knn.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div})
