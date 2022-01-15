@@ -49,10 +49,13 @@ def index1(request):
         uploaded_file = request.FILES['document']
         name = uploaded_file.name
         request.session['name'] = name
-        df = pd.read_csv(uploaded_file)
+        #df = pd.read_csv(uploaded_file)
         #new
         #df = clean_dataset(df)
-
+        #new MMVV
+        sep = request.POST['separator']
+        df = pd.read_csv(uploaded_file, sep = sep)
+        
         dataFrame = df.to_json()
         request.session['df'] = dataFrame
         

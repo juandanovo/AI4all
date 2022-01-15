@@ -134,34 +134,46 @@
 
           <div class="info col-md-6">
            
-            <div class="box__info" style="height: 150px;">
+            <div class="box__detail" style="width: 1000px; height: 300px;"  >
               <table class="table table_attr-primary">
                 <thead class="table">               
                 <tr>
-                        <th scope="col">Result</th>
+                        <th style="width: 250px;" >Result</th>
                 </tr>
                 </thead>
                 <tbody>               
                         <tr>
-                            <th><p>Predicted value is = {{y_pred}}</p></th>
+                            <th>Predicted value is = </th>
+                            <th> <p>{{y_pred}}</p></th>
                           </tr>
-                          <tr><th> <p>The test accuracy is = {{acc}}</p></th></tr>
+                          <tr><th> The test accuracy is =</th>
+                            <th> <p>{{acc}}</p></th>
+                          </tr>
                             
-                          <tr>  <th> <p>The train accuracy is = {{acc1}}</p></th></tr>
+                          <tr>  <th>The train accuracy is = </th>
+                            <th> <p>{{acc1}}</p></th>
+                          </tr>
 
-                          <tr>  <th> <p>The accuracy score is = {{acc_score}}</p></th></tr>
+                          <tr>  <th>The accuracy score is =</th>
+                            <th> <p>{{acc_score}}</p></th>
+                          </tr>
 
-                          <tr>  <th> <p>The Confution Matrix is = {{confu_mx}}</p></th></tr>
+                          <tr>  <th> The Confusion Matrix is = </th>
+                            <th> <p>{{confu_mx}}</p></th>
+                          </tr>
 
-                          <tr>  <th> <p>The Classification report is = {{classifi}}</p></th></tr>
+                          <tr>  <th> The Classification report is = </th>
+                            <th> <p>{{classifi}}</p></th>
+                          </tr>
                           <br>
                        
                     </tbody>
-            </table>      
+            </table>  
+                
          
          <br>  
-        <div class="box__detail" style="width: 1000px; height: 600px;"  >
-          <div class="scroll" style="width: 1000px; height: 600px;">
+        <div class="box__detail" style="width: 1000px; height: 400px;"  >
+          <div class="scroll" style="width: 1000px; height: 400px;">
               <table class="table table-striped selectedTable"id="table_details">
                   <thead class="table-dark">                     
                       

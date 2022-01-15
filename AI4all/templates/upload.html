@@ -9,10 +9,50 @@
                     <div class="uploaded col-md-12">
                         
                             <h2 class="font-weight-bold print">Data Statistic </h2>
-                            <p class="text-muted mb-0 print">They allow us to learn from past behaviors, and understand how they might influence future outcomes.</p><br>
+                           <!--  <p class="text-muted mb-0 print">They allow us to learn from past behaviors, and understand how they might influence future outcomes.</p><br>-->
+                             <div class="input-group sm-6">
+                                {% csrf_token %}
+                                <!-- <label class="form-label" for="separator">Select separator:</label>
+                                    <select class="form-select" id="separator" name="separator" required>
+                                    <option value=",">Coma , </option>
+                                    <option value=";">Semi-colon (;)</option>
+                                    <option value=":">Colon (:)</option>
+                                    <option value="\s+">Single-space </option> 
+                                    <option value="\t">Tab separator</option>                                                                     
+                                    
+                                    </select> -->
+
+                                    <!-- Material inline 1 -->
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" id="separator" name="separator" value= ",">
+                                        <label class="form-check-label" for="separator">Coma ( , )</label>
+                                    </div>
+                                    <!-- Material inline 2 -->
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" id="separator" name="separator" value= ";">
+                                        <label class="form-check-label" for="separator">Semi-colon ( ; )</label>
+                                    </div>
+                                    <!-- Material inline 3 -->
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" id="separator" name="separator" value= ":">
+                                        <label class="form-check-label" for="separator">Colon ( : )</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" id="separator" name="separator" value= "\s+">
+                                        <label class="form-check-label" for="separator">Single-space</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" id="separator" name="separator" value= "\t">
+                                        <label class="form-check-label" for="separator">Tab separator</label>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                    Please select a valid separator.
+                                    </div>                               
+                            </div>
+                            <br>
                             <div class="input-group mb-3">
                                 {% csrf_token %}
-                                
+                               
                                 <input type="file" class="form-control" name="document" id="nameFile">
                                 <button class="btn btn-outline-primary" type="submit" id="file">Apply</button>
                             </div>
