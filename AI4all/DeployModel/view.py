@@ -165,6 +165,12 @@ def result1(request):
     from sklearn.tree import DecisionTreeRegressor
     from sklearn.cluster import KMeans
 
+    from sklearn.metrics import classification_report
+    from sklearn.metrics import confusion_matrix
+    from sklearn.metrics import accuracy_score
+
+    from sklearn.preprocessing import StandardScaler
+
     x = df.iloc[:,1:-1].values
     y = df.iloc[:,-1].values
     
@@ -189,12 +195,31 @@ def result1(request):
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
 
-        # request.session['model'] = cls
+        # Finalize Model
+        
+        # prepare the model
+        scaler = StandardScaler().fit(x_train)
+        rescaledX = scaler.transform(x_train)
+        model = KNeighborsClassifier(n_neighbors=int(hyp[1]), weights=hyp[2], algorithm=hyp[3])
+        model.fit(rescaledX, y_train)
+        # estimate accuracy on validation dataset
+        rescaledValidationX = scaler.transform(x_test)
+        predictions = model.predict(rescaledValidationX)
+        print(accuracy_score(y_test, predictions)*100.0)
+        print(confusion_matrix(y_test, predictions))
+        print(classification_report(y_test, predictions))
+
 
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
         acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
+
+
+        acc_score = accuracy_score(y_test, predictions)*100
+        confu_mx = confusion_matrix(y_test, predictions)
+        classifi = classification_report(y_test, predictions)
+
 
         u=hyp[4]
 
@@ -216,8 +241,8 @@ def result1(request):
             #fig = px.imshow(df)
             plot_div=fig.show()
 
-        return render(request, "knn.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div})
-   
+        return render(request, "knn.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div, 'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
+       # return render(request, "knn.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div, 'confu_mx':confu_mx, 'classifi':classifi})
    # DECISION
     if 'submit1' in request.GET:
 
