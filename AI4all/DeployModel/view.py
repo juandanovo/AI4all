@@ -17,7 +17,7 @@ from plotly.offline import plot
 from plotly.graph_objs import Scatter,bar,Pie,Histogram 
 import plotly.graph_objects as go
 import pandas as pd
-import seaborn as sns
+#import seaborn as sns
 import plotly.express as px
 import matplotlib.pyplot as plt
 fig_size = plt.rcParams["figure.figsize"]
