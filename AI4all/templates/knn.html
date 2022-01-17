@@ -109,7 +109,7 @@
               <option value="pie">pie</option>
               <option value="hist">hist</option>
               <option value="scatter">scatter</option>
-              <option value="corr">corr</option>
+              <option value="corr">box</option>
             </select>
 
             <div class="invalid-feedback">
@@ -184,6 +184,7 @@
         <h3>Graph</h3>
           {% autoescape off %}
           {{ plot_div }}
+          {{ plt }}
           {% endautoescape %}
 
        </tbody>

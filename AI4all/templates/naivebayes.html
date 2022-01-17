@@ -104,7 +104,7 @@
               <option value="pie">pie</option>
               <option value="hist">hist</option>
               <option value="scatter">scatter</option>
-              <option value="corr">corr</option>
+              <option value="corr">box</option>
             </select>
            
             <div class="invalid-feedback">
@@ -137,13 +137,30 @@
                 </tr>
                 </thead>
                 <tbody>               
-                        <tr>
-                            <th><p>Predicted value is = {{y_pred}}</p></th>
-                          </tr>
-                          <tr><th> <p>The test accuracy is = {{acc}}</p></th></tr>
-                            
-                          <tr>  <th> <p>The train accuracy is = {{acc1}}</p></th></tr>
-                       
+                  <tr>
+                    <th>Predicted value is = </th>
+                    <th> <p>{{y_pred}}</p></th>
+                  </tr>
+                  <tr><th> The test accuracy is =</th>
+                    <th> <p>{{acc}}</p></th>
+                  </tr>
+                    
+                  <tr>  <th>The train accuracy is = </th>
+                    <th> <p>{{acc1}}</p></th>
+                  </tr>
+
+                  <tr>  <th>The accuracy score is =</th>
+                    <th> <p>{{acc_score}}</p></th>
+                  </tr>
+
+                  <tr>  <th> The Confusion Matrix is = </th>
+                    <th> <p>{{confu_mx}}</p></th>
+                  </tr>
+
+                  <tr>  <th> The Classification report is = </th>
+                    <th> <p>{{classifi}}</p></th>
+                  </tr>
+                  <br>
                     </tbody>
             </table>      
          

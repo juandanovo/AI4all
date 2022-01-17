@@ -1,3 +1,4 @@
+  
 import django
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -13,9 +14,21 @@ import matplotlib.pyplot as plt
 import io
 import matplotlib.pyplot as plt; plt.rcdefaults()
 from plotly.offline import plot
-from plotly.graph_objs import Scatter,bar,Pie,Histogram,Heatmap
+from plotly.graph_objs import Scatter,bar,Pie,Histogram 
+import plotly.graph_objects as go
+import pandas as pd
+import seaborn as sns
 import plotly.express as px
+import matplotlib.pyplot as plt
+fig_size = plt.rcParams["figure.figsize"]
 
+# Set figure width to 12 and height to 9
+fig_size[0] = 15
+fig_size[1] = 12
+plt.rcParams["figure.figsize"] = fig_size
+
+# Set font size
+plt.rc("font", size=14)
 
 
 global df
@@ -41,9 +54,12 @@ def upload(request):
 #     indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
 
 #     return df[indices_to_keep].astype(np.float64)
-
+ 
 def index1(request):
     global df
+    global fig
+    
+          
     # request.session.clear()
     if bool(request.FILES.get('document', False)) == True:
         uploaded_file = request.FILES['document']
@@ -53,6 +69,8 @@ def index1(request):
         #new
         #df = clean_dataset(df)
         #new MMVV
+
+         
         sep = request.POST['separator']
         df = pd.read_csv(uploaded_file, sep = sep)
         
@@ -108,6 +126,13 @@ def index1(request):
             }
     return render(request, 'upload.html', data) 
 
+            
+def index2(request):
+ 
+ 
+          
+   
+       return render(request, "upload.html", { 'plt':plt})
 
 def home(request):
     return render(request, "home.html")
@@ -192,6 +217,8 @@ def result1(request):
         hyp.append(request.GET['algorithm'])
         hyp.append(request.GET['graph'])
 
+         
+
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=float(hyp[0]))
  
         cls = KNeighborsClassifier(n_neighbors=int(hyp[1]), weights=hyp[2], algorithm=hyp[3])
@@ -235,16 +262,12 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            #df = df.corr()
+            plot_div=plot([go.Box(x=y_data,y=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+     8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25])],   output_type='div')
+           #plot_div=plot([go.Box(y = [0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+    # 8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25],x=y_data)],output_type='div')
 
-            df= px.data.tips()   
-            fig= px.box(df, x="day", y="tip")   
-            #fig.show()
-             
-            #fig = px.imshow(df)
-            plot_div=fig.show()
-
-        return render(request, "knn.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div, 'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
+        return render(request, "knn.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div,  'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
        # return render(request, "knn.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div, 'confu_mx':confu_mx, 'classifi':classifi})
    # DECISION
     if 'submit1' in request.GET:
@@ -262,12 +285,30 @@ def result1(request):
 
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
+ # Finalize Model
+        
+        # prepare the model
+        scaler = StandardScaler().fit(x_train)
+        rescaledX = scaler.transform(x_train)
+        model = DecisionTreeClassifier(criterion=hyp[1], splitter=hyp[2], max_features=hyp[3])
+        model.fit(rescaledX, y_train)
+        # estimate accuracy on validation dataset
+        rescaledValidationX = scaler.transform(x_test)
+        predictions = model.predict(rescaledValidationX)
+        print(accuracy_score(y_test, predictions)*100.0)
+        print(confusion_matrix(y_test, predictions))
+        print(classification_report(y_test, predictions))
+
 
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
         acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
-        
+
+
+        acc_score = accuracy_score(y_test, predictions)*100
+        confu_mx = confusion_matrix(y_test, predictions)
+        classifi = classification_report(y_test, predictions)
         u=hyp[4]
 
         if u == 'scatter':
@@ -279,11 +320,9 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            df = df.corr()
-            fig = px.imshow(df)
-            plot_div=fig.show()
-        return render(request, "Decision.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
-
+            plot_div=plot([go.Box(x=y_data,y=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+     8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25])],   output_type='div')
+        return render(request, "Decision.html",{'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div,  'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
 # NAIVE BAYES
     if 'submit2' in request.GET:
 
@@ -299,12 +338,31 @@ def result1(request):
 
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
+ # Finalize Model
+        
+        # prepare the model
+        scaler = StandardScaler().fit(x_train)
+        rescaledX = scaler.transform(x_train)
+        model = SVC(C=2.0, kernel='linear')
+
+        model.fit(rescaledX, y_train)
+        # estimate accuracy on validation dataset
+        rescaledValidationX = scaler.transform(x_test)
+        predictions = model.predict(rescaledValidationX)
+        print(accuracy_score(y_test, predictions)*100.0)
+        print(confusion_matrix(y_test, predictions))
+        print(classification_report(y_test, predictions))
+
 
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
-        acc = cls.score(x_test, y_test)*100
+        acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
 
+
+        acc_score = accuracy_score(y_test, predictions)*100
+        confu_mx = confusion_matrix(y_test, predictions)
+        classifi = classification_report(y_test, predictions)
         u=hyp[3]
 
         if u == 'scatter':
@@ -316,10 +374,9 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            df = df.corr()
-            fig = px.imshow(df)
-            plot_div=fig.show()
-        return render(request, "naivebayes.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
+            plot_div=plot([go.Box(y=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+     8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25],x=y_data)],   output_type='div')
+        return render(request, "naivebayes.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div,  'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
 
 # LOGISTIC REGRESSION
     if 'submit3' in request.GET:
@@ -339,11 +396,30 @@ def result1(request):
         
         y_pred = cls.predict([s])
 
+      # Finalize Model
+        
+        # prepare the model
+        scaler = StandardScaler().fit(x_train)
+        rescaledX = scaler.transform(x_train)
+        model = LogisticRegression(solver=hyp[1],penalty=hyp[2])
+        model.fit(rescaledX, y_train)
+        # estimate accuracy on validation dataset
+        rescaledValidationX = scaler.transform(x_test)
+        predictions = model.predict(rescaledValidationX)
+        print(accuracy_score(y_test, predictions)*100.0)
+        print(confusion_matrix(y_test, predictions))
+        print(classification_report(y_test, predictions))
+
+
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
-        acc = cls.score(x_test, y_test)*100
+        acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
 
+
+        acc_score = accuracy_score(y_test, predictions)*100
+        confu_mx = confusion_matrix(y_test, predictions)
+        classifi = classification_report(y_test, predictions)
         u=hyp[3]
 
         if u == 'scatter':
@@ -355,11 +431,9 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            df = df.corr()
-            fig = px.imshow(df)
-            plot_div=fig.show()
-        return render(request, "logisticreg.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
-
+            plot_div=plot([go.Box(y=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+     8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25],x=y_data)],   output_type='div')
+        return render(request, "logisticreg.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div,  'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
 # LINEAR REGRESSION
     if 'submit4' in request.GET:
 
@@ -376,12 +450,30 @@ def result1(request):
        
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
+ # Finalize Model
+        
+        # prepare the model
+        scaler = StandardScaler().fit(x_train)
+        rescaledX = scaler.transform(x_train)
+        model = SVC(C=2.0, kernel='linear')
+        model.fit(rescaledX, y_train)
+        # estimate accuracy on validation dataset
+        rescaledValidationX = scaler.transform(x_test)
+        predictions = model.predict(rescaledValidationX)
+        print(accuracy_score(y_test, predictions)*100.0)
+        print(confusion_matrix(y_test, predictions))
+        print(classification_report(y_test, predictions))
+
 
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
-        acc = cls.score(x_test, y_test)*100
+        acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
 
+
+        acc_score = accuracy_score(y_test, predictions)*100
+        confu_mx = confusion_matrix(y_test, predictions)
+        classifi = classification_report(y_test, predictions)
         u=hyp[3]
 
         if u == 'scatter':
@@ -393,11 +485,9 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            df = df.corr()
-            fig = px.imshow(df)
-            plot_div=fig.show()
-        return render(request, "linearreg.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
-
+            plot_div=plot([go.Box(y=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+     8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25],x=y_data)],   output_type='div')
+        return render(request, "linearreg.html",{'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div,  'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
 # MPL CLASSIFIER
     if 'submit5' in request.GET:
 
@@ -415,11 +505,30 @@ def result1(request):
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
 
+       # Finalize Model
+        
+        # prepare the model
+        scaler = StandardScaler().fit(x_train)
+        rescaledX = scaler.transform(x_train)
+        model = MLPClassifier(activation=hyp[1],solver=hyp[2],learning_rate=hyp[3])
+        model.fit(rescaledX, y_train)
+        # estimate accuracy on validation dataset
+        rescaledValidationX = scaler.transform(x_test)
+        predictions = model.predict(rescaledValidationX)
+        print(accuracy_score(y_test, predictions)*100.0)
+        print(confusion_matrix(y_test, predictions))
+        print(classification_report(y_test, predictions))
+
+
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
-        acc = cls.score(x_test, y_test)*100
+        acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
 
+
+        acc_score = accuracy_score(y_test, predictions)*100
+        confu_mx = confusion_matrix(y_test, predictions)
+        classifi = classification_report(y_test, predictions)
         u=hyp[4]
 
         if u == 'scatter':
@@ -431,10 +540,9 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            df = df.corr()
-            fig = px.imshow(df)
-            plot_div=fig.show()
-        return render(request, "MLPClassifier.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
+            plot_div=plot([go.Box(y=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+     8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25],x=y_data)],   output_type='div')
+        return render(request, "MLPClassifier.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div,  'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
 
 # SVC CLASSIFIER
     if 'submit6' in request.GET:
@@ -452,11 +560,31 @@ def result1(request):
 
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
+ # Finalize Model
+        
+        # prepare the model
+        scaler = StandardScaler().fit(x_train)
+        rescaledX = scaler.transform(x_train)
+        model = SVC(C=float(hyp[1]),kernel=hyp[2],gamma=hyp[3])
+ 
+        model.fit(rescaledX, y_train)
+        # estimate accuracy on validation dataset
+        rescaledValidationX = scaler.transform(x_test)
+        predictions = model.predict(rescaledValidationX)
+        print(accuracy_score(y_test, predictions)*100.0)
+        print(confusion_matrix(y_test, predictions))
+        print(classification_report(y_test, predictions))
+
 
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
-        acc = cls.score(x_test, y_test)*100
+        acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
+
+
+        acc_score = accuracy_score(y_test, predictions)*100
+        confu_mx = confusion_matrix(y_test, predictions)
+        classifi = classification_report(y_test, predictions)
 
         u=hyp[4]
 
@@ -469,10 +597,9 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            df = df.corr()
-            fig = px.imshow(df)
-            plot_div=fig.show()
-        return render(request, "SVC_Classifier.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
+            plot_div=plot([go.Box(y=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+     8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25],x=y_data)],   output_type='div')
+        return render(request, "SVC_Classifier.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div,  'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
 
 # DECIION TREE REG
     if 'submit7' in request.GET:
@@ -491,11 +618,31 @@ def result1(request):
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
 
+        # Finalize Model
+        
+        # prepare the model
+        scaler = StandardScaler().fit(x_train)
+        rescaledX = scaler.transform(x_train)
+        model = DecisionTreeRegressor(criterion=hyp[1],splitter=hyp[2],max_features=hyp[3])
+
+        model.fit(rescaledX, y_train)
+        # estimate accuracy on validation dataset
+        rescaledValidationX = scaler.transform(x_test)
+        predictions = model.predict(rescaledValidationX)
+        print(accuracy_score(y_test, predictions)*100.0)
+        print(confusion_matrix(y_test, predictions))
+        print(classification_report(y_test, predictions))
+
+
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
-        acc = cls.score(x_test, y_test)*100
+        acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
 
+
+        acc_score = accuracy_score(y_test, predictions)*100
+        confu_mx = confusion_matrix(y_test, predictions)
+        classifi = classification_report(y_test, predictions)
         u=hyp[4]
 
         if u == 'scatter':
@@ -507,10 +654,9 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            df = df.corr()
-            fig = px.imshow(df)
-            plot_div=fig.show()
-        return render(request, "DecisionTreeREG.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
+            plot_div=plot([go.Box(y=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+     8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25],x=y_data)],   output_type='div')
+        return render(request, "DecisionTreeREG.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div,  'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
 
 # K MEANS
     if 'submit8' in request.GET:
@@ -528,11 +674,30 @@ def result1(request):
         cls.fit(x_train, np.ravel(y_train))
         y_pred = cls.predict([s])
 
+    # Finalize Model
+        
+        # prepare the model
+        scaler = StandardScaler().fit(x_train)
+        rescaledX = scaler.transform(x_train)
+        model =KMeans(n_clusters=int(hyp[1]),algorithm=hyp[2])
+        model.fit(rescaledX, y_train)
+        # estimate accuracy on validation dataset
+        rescaledValidationX = scaler.transform(x_test)
+        predictions = model.predict(rescaledValidationX)
+        print(accuracy_score(y_test, predictions)*100.0)
+        print(confusion_matrix(y_test, predictions))
+        print(classification_report(y_test, predictions))
+
+
         print('Test ACCURACY is ', cls.score(x_test, y_test) * 100, '%')
         print('Train ACCURACY is ', cls.score(x_train, y_train) * 100, '%')
-        acc = cls.score(x_test, y_test)*100
+        acc = cls.score(x_test, y_test) * 100
         acc1 = cls.score(x_train,y_train)*100
 
+
+        acc_score = accuracy_score(y_test, predictions)*100
+        confu_mx = confusion_matrix(y_test, predictions)
+        classifi = classification_report(y_test, predictions)
         u=hyp[3]
 
         if u == 'scatter':
@@ -544,12 +709,10 @@ def result1(request):
         if u == 'hist':
             plot_div=plot([Histogram(x=x_data)],output_type='div')
         if u == 'corr':
-            df = df.corr()
-            fig = px.imshow(df)
-            plot_div=fig.show()
+            plot_div=plot([go.Box(y=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
+     8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25],x=y_data)],   output_type='div')
             
-        return render(request, "kmeans.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1,'plot_div': plot_div})
-
+        return render(request, "kmeans.html", {'y_pred': y_pred, 'acc': acc,'acc1':acc1, 'plot_div': plot_div,  'acc_score':acc_score, 'confu_mx':confu_mx, 'classifi':classifi})
 
     if 'save_model' in request.POST:
         from sklearn.externals import joblib
